@@ -3,7 +3,9 @@ import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:music_app/widgets/album_card.dart';
 
 class AlbumsScreen extends StatelessWidget {
+
   final FlutterAudioQuery audioQuery = FlutterAudioQuery();
+  AlbumsScreen({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(

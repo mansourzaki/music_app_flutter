@@ -4,15 +4,20 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 
-class AlbumCard extends StatelessWidget {
+class AlbumCard extends StatefulWidget {
   final List<AlbumInfo> albumInfo;
   AlbumCard({@required this.albumInfo});
 
+  @override
+  _AlbumCardState createState() => _AlbumCardState();
+}
+
+class _AlbumCardState extends State<AlbumCard> with AutomaticKeepAliveClientMixin{
   ///int _counter ;
   @override
   Widget build(BuildContext context) {
-    
-    print(albumInfo.where((element) => element.title=="1989 (Deluxe)"));
+    super.build(context);
+    print(widget.albumInfo.where((element) => element.title=="1989 (Deluxe)"));
     
     return GridView.builder(
       
@@ -22,7 +27,7 @@ class AlbumCard extends StatelessWidget {
             SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
 
         //shrinkWrap: true,
-        itemCount: albumInfo.length,
+        itemCount: widget.albumInfo.length,
         itemBuilder: (context, i) => Container(
               
               child: Card(
@@ -34,7 +39,7 @@ class AlbumCard extends StatelessWidget {
                    
                       Expanded(
                         
-                        child: albumInfo[i].albumArt == null
+                        child: widget.albumInfo[i].albumArt == null
                             ? Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Icon(
@@ -47,7 +52,7 @@ class AlbumCard extends StatelessWidget {
                             : Image(
                                 width: double.infinity,
                                 image:
-                                    Image.file(File(albumInfo[i].albumArt)).image,
+                                    Image.file(File(widget.albumInfo[i].albumArt)).image,
                                 fit: BoxFit.cover,
                               ),
                       ),
@@ -56,7 +61,7 @@ class AlbumCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left:5.0),
                       child: Text(
-                        albumInfo[i].title.startsWith("youtube")?"From Youtube":albumInfo[i].title,
+                        widget.albumInfo[i].title.startsWith("youtube")?"From Youtube":widget.albumInfo[i].title,
                         style: TextStyle(fontSize: 15, color: Colors.white),
                         textAlign: TextAlign.start,
                         overflow: TextOverflow.ellipsis,
@@ -67,7 +72,7 @@ class AlbumCard extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 5.0),
                       child: Text(
                           
-                          albumInfo[i].artist == "<unknown>"?"Unknown Artist":albumInfo[i].artist,
+                          widget.albumInfo[i].artist == "<unknown>"?"Unknown Artist":widget.albumInfo[i].artist,
                          
                           style: TextStyle(fontSize: 12, color: Colors.white54,),
                         
@@ -80,6 +85,10 @@ class AlbumCard extends StatelessWidget {
               ),
             ));
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 // Row(

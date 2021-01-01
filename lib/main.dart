@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/models/player.dart';
 import 'package:music_app/screens/homepage_screen.dart';
-
+import 'package:provider/provider.dart';
+import 'package:audio_service/audio_service.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -12,9 +14,12 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.black,
         accentColor: Colors.red[600],
         iconTheme: IconThemeData(color: Colors.red[600]),
-        
       ),
-      home: HomePageScreen(),
+      home: AudioServiceWidget(
+              child: ChangeNotifierProvider(
+          create: (_)=>Player(),
+          child: HomePageScreen()),
+      )
     );
   }
 }

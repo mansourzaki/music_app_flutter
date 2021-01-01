@@ -7,6 +7,7 @@ import 'package:music_app/widgets/artist_card.dart';
 
  class ArtistsScreen extends StatelessWidget {
   final FlutterAudioQuery audioQuery = FlutterAudioQuery();
+  ArtistsScreen({Key key}) : super(key: key);
   //List<ArtistInfo> allArtistsInfo = [];
   // Future getAllArtists () async{
   //   List<ArtistInfo> artists = await audioQuery.getArtists();

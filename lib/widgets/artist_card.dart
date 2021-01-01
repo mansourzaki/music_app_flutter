@@ -12,7 +12,7 @@ class ArtistCard extends StatefulWidget {
   _ArtistCardState createState() => _ArtistCardState();
 }
 
-class _ArtistCardState extends State<ArtistCard> {
+class _ArtistCardState extends State<ArtistCard> with AutomaticKeepAliveClientMixin{
   ArtistInfo artist;
 
   ///int _counter ;
@@ -21,7 +21,7 @@ class _ArtistCardState extends State<ArtistCard> {
 
   @override
   Widget build(BuildContext context) {
-    
+    super.build(context);
     // String path = ;
     //File file = File(path);
 
@@ -46,4 +46,8 @@ class _ArtistCardState extends State<ArtistCard> {
     //  return Center(child: CircularProgressIndicator());
     //}
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

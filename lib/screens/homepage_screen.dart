@@ -3,24 +3,36 @@ import 'package:music_app/screens/albums_screen.dart';
 import 'package:music_app/screens/songs_screen.dart';
 import 'package:music_app/screens/playlists_screen.dart';
 import 'package:music_app/screens/artists_screen.dart';
+import 'package:music_app/widgets/audioPlayerBar.dart';
 
 class HomePageScreen extends StatefulWidget {
-  
   @override
   _HomePageScreenState createState() => _HomePageScreenState();
 }
 
 class _HomePageScreenState extends State<HomePageScreen> {
   int _selectedIndex = 0;
-
-  static List<Widget> bottomBarItems = <Widget>[
-    AlbumsScreen(),
-    ArtistsScreen(),
-    SongsScreen(),
-    PlayListsScreen(),
+  PageController _pageController = PageController();
+  final List<Widget> bottomBarItems = <Widget>[
+    AlbumsScreen(
+      key: PageStorageKey('album_screen'),
+    ),
+    ArtistsScreen(
+      key: PageStorageKey('artist_screen'),
+    ),
+    SongsScreen(
+      key: PageStorageKey('songs'),
+    ),
+    PlayListsScreen(
+      key: PageStorageKey('playList'),
+    ),
   ];
-
+  final PageStorageBucket bucket = PageStorageBucket();
   void _onItemTapped(int index) {
+    _pageController.jumpToPage(index);
+  }
+
+  void _onPageChanged(int index) {
     setState(() {
       _selectedIndex = index;
     });
@@ -29,7 +41,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF1a1a18),
+      backgroundColor: Colors.grey.withOpacity(0.15),
         appBar: AppBar(
           title: _selectedIndex == 0
               ? Text("My Albums")
@@ -45,48 +57,17 @@ class _HomePageScreenState extends State<HomePageScreen> {
             )
           ],
         ),
-        body: bottomBarItems[_selectedIndex],
+        body: PageView(
+          controller: _pageController,
+          children: bottomBarItems,
+          onPageChanged: _onPageChanged,
+        ),
         bottomNavigationBar: Container(
+          color: Colors.black,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                color: Colors.black,
-                height: 70,
-                margin: EdgeInsets.symmetric(horizontal: 0,vertical: 3),
-                padding: EdgeInsets.only(left: 15,bottom: 10,right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ClipRRect(
-                      clipBehavior: Clip.antiAlias,
-                      borderRadius: BorderRadius.circular(0),
-                      child: Image.network(
-                        "https://res.cloudinary.com/demo/image/fetch/https://upload.wikimedia.org/wikipedia/commons/1/13/Benedict_Cumberbatch_2011.png",
-                        fit: BoxFit.cover,
-                        width: 50,
-                        height: 50,
-                      ),
-                    ),
-                    Text("song titleee",style: TextStyle(color: Colors.red[600],fontSize: 20),overflow: TextOverflow.ellipsis),
-                    Row(
-                      children: [
-                        IconButton(
-                            icon: Icon(Icons.skip_next, color: Colors.red[600],size: 40,),
-                            onPressed: null),
-                        IconButton(
-                            icon:
-                                Icon(Icons.play_arrow, color: Colors.red[600],size: 40,),
-                            onPressed: null),
-                        IconButton(
-                            icon: Icon(Icons.skip_previous,
-                                color: Colors.red[600],size: 40,),
-                            onPressed: null),
-                      ],
-                    )
-                  ],
-                ),
-              ),
+              AudioPlayerBar(),
               // Divider(
               //   height: 5,
               // ),

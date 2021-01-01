@@ -1,31 +1,34 @@
-import 'dart:io';
 import 'package:just_audio/just_audio.dart';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
-import 'package:music_app/screens/homepage_screen.dart';
+import 'package:provider/provider.dart';
+import '../models/player.dart';
+
 
 class SongCard extends StatefulWidget {
   final List<SongInfo> songsInfo;
   final Uint8List albumArtIfNull;
-
+  
   SongCard({@required this.songsInfo, this.albumArtIfNull});
 
   @override
   _SongCardState createState() => _SongCardState();
 }
 
-class _SongCardState extends State<SongCard> {
+class _SongCardState extends State<SongCard> with AutomaticKeepAliveClientMixin{
   SongInfo song;
-
+  //final player = AudioPlayer(); 
   final FlutterAudioQuery audioQuery = FlutterAudioQuery();
-  final player = AudioPlayer();
+  
   Future<Uint8List> songArtWork(String id) async {
     return await audioQuery.getArtwork(type: ResourceType.SONG, id: id);
   }
 
   @override
   Widget build(BuildContext context) {
+    var player = Provider.of<Player>(context);
+    super.build(context);
     widget.songsInfo.removeWhere(
         (element) => RegExp("[0-9][0-9][0-9]\$").hasMatch(element.title));
     // print(songsInfo.where((element) => element.title == 'Fearless'));
@@ -43,17 +46,20 @@ class _SongCardState extends State<SongCard> {
               );
             }
             return ListTile(
+              
               onTap: () async {
-                player.setFilePath(widget.songsInfo[i].filePath);
-                if(player.playerState.playing == true){
-                  player.stop();
+                player.setSongName(widget.songsInfo[i].title);
+                player.setSongPic(Image.memory(snapshot.data).image);
+                player.setPath(widget.songsInfo[i].filePath);
+                if(player.status == true){
+                  player.pause();
                   
                 }else{
-                  player.play();
+                  player.start();
                   
                 }
             
-                print(widget.songsInfo[i].filePath);
+              
                 //String f = await AudioManager.instance.file(File(widget.songsInfo[i].filePath), "dd");
                 //AudioManager.instance.start("file://storage/emulated/0/Music/Taylor Swift - Fearless (International Edition)/01 Fearless.mp3","dd");
                 //AudioManager.instance.start(widget.songsInfo[i].filePath, 'titl,,e');
@@ -69,11 +75,18 @@ class _SongCardState extends State<SongCard> {
                 widget.songsInfo[i].artist,
                 style: TextStyle(color: Colors.white54),
               ),
+              
             );
           }),
+
       itemCount: widget.songsInfo.length,
     );
+    
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 // ListTile(
