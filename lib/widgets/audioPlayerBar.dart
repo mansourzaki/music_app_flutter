@@ -19,8 +19,8 @@ class AudioPlayerBar extends StatelessWidget {
               clipBehavior: Clip.antiAlias,
               borderRadius: BorderRadius.circular(0),
               child: Image(
-                
-                image:player.getSongPic,
+                image: player.getSongPic ?? NetworkImage("https://image.flaticon.com/icons/png/512/26/26789.png"),
+                //image:player.getSongPic ?? "https://cdn.onlinewebfonts.com/svg/img_497705.png",
                // "https://res.cloudinary.com/demo/image/fetch/https://upload.wikimedia.org/wikipedia/commons/1/13/Benedict_Cumberbatch_2011.png",
                 fit: BoxFit.cover,
                 width: 50,

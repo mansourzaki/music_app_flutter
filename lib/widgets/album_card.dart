@@ -87,7 +87,7 @@ class _AlbumCardState extends State<AlbumCard> with AutomaticKeepAliveClientMixi
   }
 
   @override
-  // TODO: implement wantKeepAlive
+
   bool get wantKeepAlive => true;
 }
 

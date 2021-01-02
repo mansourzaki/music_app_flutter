@@ -48,6 +48,6 @@ class _ArtistCardState extends State<ArtistCard> with AutomaticKeepAliveClientMi
   }
 
   @override
-  // TODO: implement wantKeepAlive
+  
   bool get wantKeepAlive => true;
 }
